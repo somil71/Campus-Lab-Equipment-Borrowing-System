@@ -1,0 +1,30 @@
+# Build artifacts
+build/
+bin/
+obj/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Database files
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Demo generated files
+demo/demo_run/
+demo/*.db
+
+# OS generated files
+Thumbs.db
+.DS_Store
