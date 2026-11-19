@@ -1,0 +1,5 @@
+101|Arduino Uno R3 Kit|Embedded Systems|5|1
+102|Digital Storage Oscilloscope|Electronics|2|0
+103|Raspberry Pi 4 Model B|IoT & Robotics|4|0
+104|Digital Multimeter|Test & Measurement|6|0
+105|FPGA Spartan-7 Board|VLSI Design|2|0
