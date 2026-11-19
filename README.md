@@ -2,6 +2,8 @@
 
 A C++17 terminal application for a lab assistant. Add equipment, check stock, issue one unit to a student, record its return, and view active and overdue loans. SQLite is bundled as source. Building requires a C and C++ compiler. Running the built application only needs the executable and its compiler runtime in a writable working directory.
 
+> **FACULTY DEMO & VIVA GUIDE**: See [HOW_TO_RUN_TEST_AND_EXPLAIN.md](HOW_TO_RUN_TEST_AND_EXPLAIN.md) for a comprehensive guide on how to run, test, demonstrate to faculty in 3 minutes, and explain the architecture and viva questions.
+
 ## Build and launch
 
 Extract the ZIP first. Open a terminal inside the extracted CampusLab folder. Use the commands for your platform.
