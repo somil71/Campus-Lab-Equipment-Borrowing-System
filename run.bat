@@ -6,9 +6,8 @@ echo [*] Compiling main.cpp with G++...
 g++ main.cpp -o campus_lab.exe
 if %errorlevel% neq 0 (
     echo [x] Compilation failed! Ensure g++ is on PATH.
-    pause
     exit /b %errorlevel%
 )
-echo [✓] Compiled successfully! Launching program...
+echo [OK] Compiled successfully! Launching program...
 echo.
 campus_lab.exe
