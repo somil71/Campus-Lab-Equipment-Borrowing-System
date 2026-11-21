@@ -1,0 +1,4 @@
+23CS101|Aarav Sharma|CSE|aarav@campus.edu|2
+23CS102|Bhavna Patel|CSE|bhavna@campus.edu|2
+23EC045|Chirag Verma|ECE|chirag@campus.edu|2
+23EC078|Divya Nair|ECE|divya@campus.edu|2

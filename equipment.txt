@@ -1,0 +1,5 @@
+101|Arduino Uno R3 Kit|Microcontrollers|LAB-IOT|5|1|GOOD
+102|Digital Storage Oscilloscope|Test & Measurement|LAB-ECE|2|0|GOOD
+103|Raspberry Pi 4 Model B (4GB)|Single Board Computers|LAB-IOT|4|0|GOOD
+104|Digital Multimeter (True-RMS)|Instruments|LAB-ECE|6|0|GOOD
+105|FPGA Spartan-7 Board|VLSI Boards|LAB-VLSI|2|0|GOOD

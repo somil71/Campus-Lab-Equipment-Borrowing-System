@@ -1,33 +1,31 @@
 # Campus Lab Equipment Borrowing System (College Syllabus & Viva Guide)
 
-A simple, clean, and elegant **C++ Object-Oriented Project with Database Persistence** tailored specifically for college engineering lab exams, semester mini-projects, and faculty vivas.
+A comprehensive, normalized **C++ Object-Oriented Project with a 5-Entity Relational Database** designed specifically for university lab exams, semester mini-projects, and faculty vivas.
+
+> 📖 **ER DIAGRAM SPECIFICATION**: See **[docs/ER_DIAGRAM.md](docs/ER_DIAGRAM.md)** for the complete 3NF normalization justification, table definitions, and cardinality breakdown.
 
 ---
 
-## 🌟 Why This Project is Perfect for Your College Syllabus
+## 🌟 Why This Project Impresses Faculty
 
-Most faculty members do not want 10MB external production libraries, complex build tools, or 20 different source files. They look for:
-1. **Core OOP Concepts**: Classes, Objects, Encapsulation (private variables, public getters/setters), Constructors, and Member Functions.
-2. **Database & File Handling**: Using standard C++ file streams (`std::ifstream`, `std::ofstream`, `std::fstream`) to create a persistent relational database on disk (`equipment_db.txt` and `loans_db.txt`).
-3. **Instant Compilation on ANY Laptop**: Compiles in **1 second** using standard G++:
-   ```bash
-   g++ main.cpp -o campus_lab.exe
-   ```
-   Works on Windows, Linux, macOS, Dev-C++, Code::Blocks, VS Code, and Visual Studio with **zero external dependencies**!
-4. **Faculty Transparency**: Option 6 in the menu lets you display the raw database file records right on the terminal screen, or open them in Notepad/Excel to prove data persistence to your faculty.
+Unlike toy 1-table or 2-table programs, this system implements a **fully normalized (3NF) relational architecture** with 5 interconnected entities:
+1. **`LAB`**: Tracks physical lab rooms (e.g. *Block B - Room 304*) and faculty in-charge.
+2. **`STUDENT`**: Manages university roll numbers, departments, contact info, and enforce **borrow quotas (Max 2 units)**.
+3. **`EQUIPMENT`**: Tracks hardware kits, categories, assigned lab rooms, condition (*GOOD / MAINTENANCE*), and live availability.
+4. **`LOAN`**: Records transactions with auto-increment IDs, issue dates, due dates, and return timestamps.
+5. **`FINE`**: Automatically calculates overdue late fees (**₹10/day**) upon return and tracks payment status.
 
 ---
 
 ## 🚀 How to Run It on Any Laptop
 
-### Quick Run (Windows)
-Double-click or run:
+### Windows
 ```cmd
 run.bat
 ```
-*(Or simply open Command Prompt and type: `g++ main.cpp -o campus_lab.exe && campus_lab.exe`)*
+*(Or compile directly with: `g++ main.cpp -o campus_lab.exe && campus_lab.exe`)*
 
-### Quick Run (Linux / macOS)
+### Linux / macOS
 ```bash
 chmod +x run.sh
 ./run.sh
@@ -35,63 +33,51 @@ chmod +x run.sh
 
 ---
 
-## 📋 The 3-Minute Faculty Demonstration Script
+## 📋 The 3-Minute Live Faculty Demonstration Script
 
-Follow this sequence when presenting to your faculty:
+Follow this sequence to showcase all 5 entities and business rules to your faculty:
 
 | Step | Action in Program | What the Faculty Sees | What to Say |
 |---|---|---|---|
-| **1. Launch** | Run `campus_lab.exe` | Main menu appears; database is auto-loaded or seeded. | *"Respected Faculty, this system automates equipment borrowing for campus labs using C++ OOP and file-based database persistence."* |
-| **2. Check Stock** | Choose **Option 2** | Table with ID, Name, Category, Total, Borrowed, Available. | *"Here is our live lab inventory. Available stock is calculated dynamically (`Total - Borrowed`)."* |
-| **3. Add Equipment** | Choose **Option 1** $\to$ Enter `ESP32 IoT Kit`, Category `IoT`, Quantity `2` | New item added with assigned ID `#106`. | *"Notice that the new equipment is saved directly to disk in `equipment_db.txt`."* |
-| **4. Issue Equipment** | Choose **Option 3** $\to$ Equipment ID `106`, Roll `23CS01`, Name `Aarav`, Due Date | Loan confirmed with Receipt ID `#1`. Available stock reduces to `1`. | *"The system records student details, updates the loans database, and decrements available stock."* |
-| **5. Test Stock Depletion** | Issue the 2nd unit of ID `106` | Available reaches `0`. Trying to issue again shows: `[!] All units currently on loan!` | *"The system strictly prevents over-borrowing when available stock reaches zero."* |
-| **6. Return Equipment** | Choose **Option 4** $\to$ Enter Loan ID `#1` | Return confirmed! Stock increases back to `1`. | *"Returning the item updates the return date and restores the equipment back to lab stock."* |
-| **7. Duplicate Return Check** | Choose **Option 4** $\to$ Enter Loan ID `#1` again | System warns: `[!] ALREADY RETURNED on [Date]!` | *"The system protects against human error by catching duplicate return attempts."* |
-| **8. Overdue Loans** | Choose **Option 5** | Formatted table showing active loans with status `ACTIVE` or `OVERDUE [!]`. | *"Overdue loans are automatically identified using date comparisons to flag pending items."* |
-| **9. Show Raw DB File** | Choose **Option 6** | Displays raw delimited table rows (`id|name|category|total|borrowed`). | *"You can see the persistent database files on disk (`equipment_db.txt` and `loans_db.txt`), which can also be opened in Notepad or Excel."* |
+| **1. Launch & Seed** | Run `campus_lab.exe` | Main menu appears with 10 options; 5 database tables are auto-verified. | *"Respected Faculty, our system uses a normalized 5-entity relational architecture connecting Labs, Students, Equipment, Loans, and Late Fines."* |
+| **2. Physical Lab Rooms** | Choose **Option 2** | Table showing Lab ID, Name, Physical Room Number (e.g., *Block B - Room 304*), and Faculty In-Charge. | *"Hardware is mapped to specific physical lab rooms and supervising professors."* |
+| **3. Inventory & Availability** | Choose **Option 1** | Shows equipment catalog with live available stock and physical lab mapping. | *"Available units are tracked dynamically. Notice the condition status is 'GOOD'."* |
+| **4. Student Borrow Quota** | Choose **Option 3** | Displays registered students and shows their current active loans vs limit (2 units). | *"To prevent equipment hoarding, each student has a strict quota limit of 2 units."* |
+| **5. Issue Equipment** | Choose **Option 4** $\to$ Equipment `101`, Roll `23CS101`, Due Date | Loan confirmed with Receipt ID `#1001`. Remaining stock reduces. | *"The system checks that the student is registered, verifies their quota, and creates a loan record."* |
+| **6. Test Quota Blocking** | Issue a 2nd unit to `23CS101`, then try issuing a 3rd | The 3rd attempt is rejected: `[x] REJECTED (QUOTA EXCEEDED): Student has reached limit (Max 2 units)!` | *"The business layer strictly enforces student borrow limits to ensure fair resource distribution."* |
+| **7. Return & Automated Fine** | Choose **Option 5** $\to$ Enter Loan ID `#1001` | Return completed. Shows whether it was on time (₹0) or overdue with late penalty (**₹10/day**). | *"Returns are timestamped. If overdue, the system automatically creates a linked fine record."* |
+| **8. View & Pay Fines** | Choose **Option 7** | Shows all pending student fines with overdue days and amounts. Allows marking as `PAID`. | *"The finance/fine module tracks outstanding penalties and logs fee clearance."* |
+| **9. Inspect 5 DB Files** | Choose **Option 9** | Prints the raw disk records of all 5 tables (`labs.txt`, `students.txt`, `equipment.txt`, `loans.txt`, `fines.txt`). | *"All 5 tables are permanently stored on disk with primary and foreign keys, and can also be opened in Notepad or Excel."* |
 
 ---
 
-## 🎓 Core C++ & Database Concepts Explained (Viva Cheat Sheet)
+## 🎓 Core Viva Questions & Model Answers
 
-### 1. Object-Oriented Programming (OOP)
-* **Classes & Encapsulation**: 
-  * `Equipment` class: Encapsulates `id`, `name`, `category`, `totalQuantity`, and `borrowedCount` as `private` data members. Access is controlled via public getters and setters.
-  * `LoanRecord` class: Encapsulates student roll number, student name, department, equipment ID, borrow date, due date, and return status (`PENDING` or return date).
-* **Constructors**: Parametric and default constructors initialize objects with valid state.
+### Q1: What makes your database 3NF (Third Normal Form)?
+> *"Our database is fully normalized in 3NF:*
+> * *1NF: Every column contains atomic values with no repeating groups.*
+> * *2NF: Every non-key attribute depends entirely on the primary key.*
+> * *3NF: There are no transitive dependencies. Lab room locations are stored in `labs.txt` rather than redundantly duplicated in every equipment row. Student contact details are in `students.txt` rather than duplicated in loan rows."*
 
-### 2. Database Persistence & File Handling
-* **Standard C++ Streams**: Uses `std::ifstream` (reading from disk), `std::ofstream` (writing/truncating to disk), and `std::stringstream` (parsing delimited tokens).
-* **Record Serialization**: Each record is stored as a delimited row (`attribute1|attribute2|...`).
-  * `Equipment::toDatabaseRow()` and `Equipment::fromDatabaseRow()` convert between in-memory C++ objects and disk records.
-* **Auto-Increment Primary Keys**: IDs (`101`, `102`, etc.) are generated automatically by inspecting the last record's ID.
-* **Referential Integrity**: The loans table stores `equipmentId` as a foreign reference to the equipment table.
+### Q2: What happens if a student attempts to borrow an item under maintenance?
+> *"In `issueLoan()`, the equipment condition is checked. If `condition != 'GOOD'`, the transaction is rejected with error code `-5`, preventing faulty hardware from being given to students."*
 
-### 3. Likely Viva Questions & Answers
-
-#### Q1: Where is the data stored? Does it persist if we close the program?
-> *"Yes, the data persists permanently. It is stored in two structured database files: `equipment_db.txt` and `loans_db.txt`. When the program restarts, it reloads all records from these files using `std::ifstream`."*
-
-#### Q2: What happens if a student tries to borrow an item that is out of stock?
-> *"In `issueLoan()`, the system calculates `availableQuantity = totalQuantity - borrowedCount`. If available quantity is 0 or less, the system returns an error code `-2` and blocks the issue request."*
-
-#### Q3: How do you prevent SQL/data corruption when returning an item?
-> *"Before processing a return, `returnLoan()` checks `isReturned()`. If the return date is not `PENDING`, it blocks the transaction and warns that the loan was already closed on that date."*
-
-#### Q4: How are dates handled?
-> *"We use standard C/C++ `<ctime>` to generate today's date in `YYYY-MM-DD` format. In this ISO-8601 format, chronological comparison is identical to alphabetical comparison (`dueDate < todayDate`), allowing simple and reliable overdue detection."*
+### Q3: How is the overdue fine calculated?
+> *"When a return is logged, the system parses the due date and current date using `<ctime>` and `mktime()`. If `todayDate > dueDate`, it computes the day difference and applies the college late fee formula: `overdueDays * ₹10.0`."*
 
 ---
 
 ## 📁 File Structure
 ```
 Campus-Lab-Equipment-Borrowing-System/
-├── main.cpp                        # Complete single-file C++ application (OOP + DB)
+├── main.cpp                        # Complete single-file C++ application (5 Entities)
 ├── run.bat                         # 1-click compile and run script for Windows
 ├── run.sh                          # 1-click compile and run script for Linux/macOS
-├── equipment_db.txt                # Auto-generated database table for equipment
-├── loans_db.txt                    # Auto-generated database table for loans
-├── HOW_TO_RUN_TEST_AND_EXPLAIN.md  # Comprehensive faculty guide and viva cheat sheet
-└── README.md                       # Project overview and instructions
+├── labs.txt                        # Relational Table: Lab rooms and faculty
+├── students.txt                    # Relational Table: Students and quotas
+├── equipment.txt                   # Relational Table: Hardware inventory
+├── loans.txt                       # Relational Table: Active and completed loans
+├── fines.txt                       # Relational Table: Overdue penalties
+├── docs/ER_DIAGRAM.md              # Complete ER diagram and 3NF specification
+└── HOW_TO_RUN_TEST_AND_EXPLAIN.md  # Viva preparation and demo guide
 ```

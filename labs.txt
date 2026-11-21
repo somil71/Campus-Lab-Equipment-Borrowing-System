@@ -1,0 +1,3 @@
+LAB-IOT|IoT & Robotics Lab|Block B - Room 304|Prof. S. K. Verma
+LAB-ECE|Advanced Electronics Lab|Block A - Room 102|Dr. Anita Rao
+LAB-VLSI|Embedded & VLSI Design Lab|Block B - Room 308|Dr. R. K. Sharma
